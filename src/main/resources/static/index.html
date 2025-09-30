@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <title>Warehouse Übersicht</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 40px;
+        }
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin-top: 20px;
+        }
+        th, td {
+            border: 1px solid #ccc;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f4f4f4;
+        }
+        input, button {
+            padding: 6px;
+            margin-right: 10px;
+        }
+    </style>
+</head>
+<body>
+<h1>Warehouse Übersicht</h1>
+
+<div>
+    <label for="cityFilter">Standort filtern:</label>
+    <input type="text" id="cityFilter" placeholder="z.B. Wien">
+
+    <label for="productFilter">Produktname filtern:</label>
+    <input type="text" id="productFilter" placeholder="z.B. Apfel">
+
+    <button id="filterBtn">Filtern</button>
+    <button id="reloadBtn">Daten neu laden</button>
+</div>
+
+<table id="warehouseTable">
+    <thead>
+    <tr>
+        <th>Produkt ID</th>
+        <th>Produkt Name</th>
+        <th>Kategorie</th>
+        <th>Menge</th>
+        <th>Einheit</th>
+    </tr>
+    </thead>
+    <tbody>
+    </tbody>
+</table>
+
+<script>
+    var allData = [];
+    var warehouseCity = '';
+
+    function loadData() {
+        fetch('/warehouse/001/json')
+            .then(function(response) { return response.json(); })
+            .then(function(data) {
+                allData = data.productdata;
+                warehouseCity = data.warehouseCity;
+                renderTable(allData);
+            });
+    }
+
+    function renderTable(products) {
+        var tbody = document.getElementById('warehouseTable').querySelector('tbody');
+        tbody.innerHTML = '';
+        for (var i = 0; i < products.length; i++) {
+            var p = products[i];
+            var row = document.createElement('tr');
+            row.innerHTML = '<td>' + p.productID + '</td>' +
+                '<td>' + p.productName + '</td>' +
+                '<td>' + p.productCategory + '</td>' +
+                '<td>' + p.productQuantity + '</td>' +
+                '<td>' + p.productUnit + '</td>';
+            tbody.appendChild(row);
+        }
+    }
+
+    function filterData() {
+        var cityFilter = document.getElementById('cityFilter').value.trim().toLowerCase();
+        var productFilter = document.getElementById('productFilter').value.trim().toLowerCase();
+
+        var filtered = allData;
+
+        if (cityFilter && warehouseCity.toLowerCase() !== cityFilter) filtered = [];
+        if (productFilter) {
+            filtered = filtered.filter(function(p) {
+                return p.productName.toLowerCase().includes(productFilter);
+            });
+        }
+
+        renderTable(filtered);
+    }
+
+    document.getElementById('filterBtn').addEventListener('click', filterData);
+    document.getElementById('reloadBtn').addEventListener('click', loadData);
+
+
+    loadData();
+</script>
+</body>
+</html>
