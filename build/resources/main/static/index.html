@@ -49,10 +49,10 @@
         <th>Kategorie</th>
         <th>Menge</th>
         <th>Einheit</th>
+        <th>City</th>
     </tr>
     </thead>
     <tbody>
-    <!-- Daten werden hier eingefügt -->
     </tbody>
 </table>
 
@@ -80,7 +80,8 @@
                 '<td>' + p.productName + '</td>' +
                 '<td>' + p.productCategory + '</td>' +
                 '<td>' + p.productQuantity + '</td>' +
-                '<td>' + p.productUnit + '</td>';
+                '<td>' + p.productUnit + '</td>'+
+                '<td>' + warehouseCity + '</td>';
             tbody.appendChild(row);
         }
     }
@@ -104,7 +105,7 @@
     document.getElementById('filterBtn').addEventListener('click', filterData);
     document.getElementById('reloadBtn').addEventListener('click', loadData);
 
-    // initial laden
+
     loadData();
 </script>
 </body>

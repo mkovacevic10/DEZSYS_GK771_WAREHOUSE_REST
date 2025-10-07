@@ -49,6 +49,7 @@
         <th>Kategorie</th>
         <th>Menge</th>
         <th>Einheit</th>
+        <th>City</th>
     </tr>
     </thead>
     <tbody>
@@ -79,7 +80,8 @@
                 '<td>' + p.productName + '</td>' +
                 '<td>' + p.productCategory + '</td>' +
                 '<td>' + p.productQuantity + '</td>' +
-                '<td>' + p.productUnit + '</td>';
+                '<td>' + p.productUnit + '</td>'+
+                '<td>' + warehouseCity + '</td>';
             tbody.appendChild(row);
         }
     }
